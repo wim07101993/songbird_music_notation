@@ -1,0 +1,24 @@
+name: songbird_music_notation
+description: >-
+  Renders and edits music notation in Flutter: a staff layout engine, a
+  SMuFL-based painter, and widgets for viewing, zooming, transposing and
+  editing a score.
+version: 0.1.0
+repository: https://github.com/wim07101993/songbird_music_notation
+
+environment:
+  sdk: ^3.9.0
+  flutter: ">=3.24.0"
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  songbird_score: ^0.1.0
+  songbird_smufl: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  songbird_musicxml: ^0.1.0

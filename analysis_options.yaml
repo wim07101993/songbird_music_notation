@@ -1,0 +1,38 @@
+include: package:lint/strict.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    todo: ignore
+  exclude:
+    # Written from the MusicXML schema and the SMuFL metadata by the tools in
+    # each package. Nobody edits them by hand, so holding them to a house style
+    # says nothing about the house.
+    - "**/*.g.dart"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - directives_ordering
+    - prefer_final_locals
+    - prefer_single_quotes
+    - unawaited_futures
+    - unnecessary_parenthesis
+
+formatter:
+  # Since Dart 3.7 the formatter joins a parameter or argument list onto one
+  # line whenever it fits, deleting the trailing comma that used to hold it
+  # open. Preserving the comma gives that control back, which is what keeps
+  # every constructor in this repository split one parameter per line.
+  trailing_commas: preserve

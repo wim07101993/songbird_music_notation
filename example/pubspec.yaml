@@ -1,0 +1,26 @@
+name: songbird_notation_example
+description: A demonstration of the Songbird music-notation packages.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  file_selector: ^1.0.3
+  flutter:
+    sdk: flutter
+  songbird_music_notation: ^0.1.0
+  songbird_musicxml: ^0.1.0
+  songbird_score: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

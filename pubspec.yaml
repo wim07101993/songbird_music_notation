@@ -1,0 +1,20 @@
+name: songbird_music_notation_workspace
+publish_to: none
+description: >-
+  Development workspace for the Songbird music-notation packages: a pure-Dart
+  score model, a MusicXML reader/writer, SMuFL font support and a Flutter
+  renderer/editor.
+
+environment:
+  sdk: ^3.9.0
+
+workspace:
+  - packages/songbird_score
+  - packages/songbird_smufl
+  - packages/songbird_musicxml
+  - packages/songbird_music_notation
+  - example
+
+dev_dependencies:
+  lint: ^2.14.0
+  test: ^1.25.0

@@ -1,0 +1,20 @@
+name: songbird_musicxml
+description: >-
+  Reads and writes MusicXML 4.0, both the uncompressed and the compressed .mxl
+  form, with a generated typed document model and a mapping to songbird_score.
+version: 0.1.0
+repository: https://github.com/wim07101993/songbird_music_notation
+
+environment:
+  sdk: ^3.9.0
+
+resolution: workspace
+
+dependencies:
+  archive: ^4.0.0
+  songbird_score: ^0.1.0
+  xml: ^6.5.0
+
+dev_dependencies:
+  analyzer: ^8.0.0
+  test: ^1.25.0

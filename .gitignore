@@ -1,0 +1,21 @@
+.dart_tool/
+.packages
+build/
+pubspec.lock
+.idea/
+.vscode/
+*.iml
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Flutter/Dart build output
+example/build/
+example/.dart_tool/
+example/linux/flutter/ephemeral/
+example/macos/Flutter/ephemeral/
+example/windows/flutter/ephemeral/
+
+# The MusicXML sample set, fetched by tool/fetch_musicxml_samples.sh.
+# Not committed: the files are MakeMusic's, and the permission on them is to
+# host them at musicxml.com rather than to pass them on.
+samples/
