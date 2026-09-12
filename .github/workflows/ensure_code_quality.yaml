@@ -1,0 +1,114 @@
+name: Ensure code quality
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Format and analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze source code
+        run: dart analyze --fatal-infos --fatal-warnings
+
+  test:
+    name: Test ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - package: songbird_score
+            sdk: dart
+          - package: songbird_smufl
+            sdk: dart
+          - package: songbird_musicxml
+            sdk: dart
+          - package: songbird_music_notation
+            sdk: flutter
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Run tests
+        if: matrix.sdk == 'flutter'
+        working-directory: packages/${{ matrix.package }}
+        run: flutter test --coverage
+
+      - name: Run tests
+        if: matrix.sdk == 'dart'
+        working-directory: packages/${{ matrix.package }}
+        run: |
+          dart pub global activate coverage
+          dart test --coverage=coverage
+          dart pub global run coverage:format_coverage \
+            --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        continue-on-error: true
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.package }}/coverage/lcov.info
+          flags: ${{ matrix.package }}
+          fail_ci_if_error: false
+
+  pub-score:
+    name: Pub score ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - package: songbird_score
+          - package: songbird_smufl
+          - package: songbird_musicxml
+          - package: songbird_music_notation
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Install pana
+        run: dart pub global activate pana
+
+      - name: Verify pub score
+        run: tool/ensure_pana_score.sh packages/${{ matrix.package }} 160
+
+      - name: Verify ready for publish
+        working-directory: packages/${{ matrix.package }}
+        run: dart pub publish --dry-run

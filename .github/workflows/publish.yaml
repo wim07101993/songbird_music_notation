@@ -1,0 +1,66 @@
+name: Publish to pub.dev
+
+# One repository, four packages, so a bare `v1.2.3` does not say what to
+# publish. Tags name their package: `songbird_score-v0.2.0`, which is the
+# convention pub.dev's own monorepos use.
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to publish
+        required: true
+        type: choice
+        options:
+          - songbird_score
+          - songbird_smufl
+          - songbird_musicxml
+          - songbird_music_notation
+  push:
+    tags:
+      - 'songbird_score-v[0-9]+.[0-9]+.[0-9]+*'
+      - 'songbird_smufl-v[0-9]+.[0-9]+.[0-9]+*'
+      - 'songbird_musicxml-v[0-9]+.[0-9]+.[0-9]+*'
+      - 'songbird_music_notation-v[0-9]+.[0-9]+.[0-9]+*'
+
+jobs:
+  prepare:
+    name: Resolve package
+    runs-on: ubuntu-latest
+    outputs:
+      package: ${{ steps.resolve.outputs.package }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve package and check the version
+        id: resolve
+        run: |
+          set -euo pipefail
+          if [[ '${{ github.event_name }}' == 'workflow_dispatch' ]]; then
+            package='${{ inputs.package }}'
+            version=''
+          else
+            package="${GITHUB_REF_NAME%-v*}"
+            version="${GITHUB_REF_NAME##*-v}"
+          fi
+
+          dir="packages/$package"
+          [[ -d "$dir" ]] || { echo "::error::no package at $dir"; exit 1; }
+
+          # A tag that disagrees with the pubspec publishes a version nobody
+          # asked for, and pub.dev will not let you take it back.
+          pubspec="$(sed -n 's/^version: *//p' "$dir/pubspec.yaml")"
+          if [[ -n "$version" && "$version" != "$pubspec" ]]; then
+            echo "::error::tag says $version, $dir/pubspec.yaml says $pubspec"
+            exit 1
+          fi
+
+          echo "package=$package" >>"$GITHUB_OUTPUT"
+          echo "Publishing $package ${version:-$pubspec}"
+
+  publish:
+    needs: prepare
+    permissions:
+      id-token: write # required to request the OIDC token pub.dev trusts
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    with:
+      working-directory: packages/${{ needs.prepare.outputs.package }}

@@ -1,8 +1,7 @@
 name: songbird_smufl
 description: >-
   SMuFL music-font support in pure Dart: generated glyph names, font metadata
-  (bounding boxes, anchors, engraving defaults) and the bundled Bravura font,
-  which a Flutter application picks up as an asset.
+  (bounding boxes, anchors, engraving defaults) and the bundled Bravura font.
 version: 0.1.0
 repository: https://github.com/wim07101993/songbird_music_notation
 
@@ -12,6 +11,7 @@ environment:
 resolution: workspace
 
 dev_dependencies:
+  lint: ^2.14.0
   test: ^1.25.0
 
 flutter:

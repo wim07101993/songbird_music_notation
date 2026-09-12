@@ -2,6 +2,7 @@
 .packages
 build/
 pubspec.lock
+coverage/
 .idea/
 .vscode/
 *.iml
