@@ -1,3 +1,14 @@
+# The analysis options for the whole repository, and for each published package
+# individually: `packages/*/analysis_options.yaml` is a symlink to this file.
+#
+# A package has to carry its own copy, because the archive pub.dev receives is
+# the package directory and nothing above it. Without one the published code is
+# formatted by the default rules, which disagree with every trailing comma this
+# repository keeps open, and that costs ten points of the pub score. An
+# `include:` reaching out of the package cannot replace it — the path dangles
+# in the archive and the analyzer reports `include_file_not_found`, which costs
+# the same ten points. A symlink is the way to keep one file: `dart pub
+# publish` follows it and writes a real file into the archive.
 include: package:lint/strict.yaml
 
 analyzer:
