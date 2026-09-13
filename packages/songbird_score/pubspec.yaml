@@ -2,7 +2,7 @@ name: songbird_score
 description: >-
   Format-agnostic, editable model of a musical score: pitches, rhythms,
   measures, parts, plus transposition and an undoable edit command stack.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/wim07101993/songbird_music_notation
 
 environment:
