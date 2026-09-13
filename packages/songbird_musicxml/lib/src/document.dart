@@ -139,8 +139,8 @@ class MusicXmlDocument {
     };
     return XmlDocument([
       XmlDeclaration([
-        XmlAttribute(XmlName('version'), '1.0'),
-        XmlAttribute(XmlName('encoding'), 'UTF-8'),
+        XmlAttribute(const XmlName.parts('version'), '1.0'),
+        XmlAttribute(const XmlName.parts('encoding'), 'UTF-8'),
       ]),
       XmlDoctype(doctype),
       root,

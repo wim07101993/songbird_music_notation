@@ -253,8 +253,8 @@ String safeMemberName(String name, {bool isEnumMember = false}) {
 
 /// Reads the `<xs:documentation>` of a schema node as a single doc comment.
 String? documentationOf(XmlElement element) {
-  final annotation = element.getElement('annotation', namespace: xs);
-  final doc = annotation?.getElement('documentation', namespace: xs);
+  final annotation = element.getElement('annotation', namespaceUri: xs);
+  final doc = annotation?.getElement('documentation', namespaceUri: xs);
   final text = doc?.innerText.trim();
   if (text == null || text.isEmpty) return null;
   return text;

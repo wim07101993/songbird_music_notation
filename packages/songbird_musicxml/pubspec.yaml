@@ -13,7 +13,7 @@ resolution: workspace
 dependencies:
   archive: ^4.0.0
   songbird_score: ^0.1.0
-  xml: ^6.5.0
+  xml: ^7.0.0
 
 dev_dependencies:
   analyzer: ^8.0.0

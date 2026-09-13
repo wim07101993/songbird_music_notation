@@ -91,7 +91,7 @@ class DomGenerator {
       );
     }
     for (final entry in topLevelElements.entries) {
-      final inline = entry.value.getElement('complexType', namespace: xs);
+      final inline = entry.value.getElement('complexType', namespaceUri: xs);
       if (inline == null) continue;
       _buildClass(
         name: entry.key,
@@ -123,10 +123,10 @@ class DomGenerator {
     // Guard against a cycle while the type is being resolved.
     _dartTypeOfSimpleType[name] = 'String';
 
-    final restriction = definition.getElement('restriction', namespace: xs);
+    final restriction = definition.getElement('restriction', namespaceUri: xs);
     if (restriction != null) {
       final enumerations = restriction
-          .findElements('enumeration', namespace: xs)
+          .findElements('enumeration', namespaceUri: xs)
           .toList();
       if (enumerations.isNotEmpty) {
         final dartName = dartTypeName(name);
@@ -493,8 +493,8 @@ class DomGenerator {
     List<SchemaField> fields,
   ) {
     final extension =
-        simpleContent.getElement('extension', namespace: xs) ??
-        simpleContent.getElement('restriction', namespace: xs);
+        simpleContent.getElement('extension', namespaceUri: xs) ??
+        simpleContent.getElement('restriction', namespaceUri: xs);
     if (extension == null) return;
     final base = extension.getAttribute('base') ?? 'xs:string';
     final dartType = _resolveSimpleType(base);
@@ -531,7 +531,7 @@ class DomGenerator {
     List<SchemaField> fields, {
     required String owner,
   }) {
-    final extension = complexContent.getElement('extension', namespace: xs);
+    final extension = complexContent.getElement('extension', namespaceUri: xs);
     if (extension == null) return;
     final base = extension.getAttribute('base');
     if (base != null) {
@@ -662,7 +662,7 @@ class DomGenerator {
     final isList = list || _isRepeated(element);
     final isOptional = optional || _minOccurs(element) == 0;
 
-    final inlineComplex = element.getElement('complexType', namespace: xs);
+    final inlineComplex = element.getElement('complexType', namespaceUri: xs);
     String dartType;
     var isComplex = false;
     if (inlineComplex != null) {

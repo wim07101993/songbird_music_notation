@@ -117,4 +117,4 @@ String xmlNumberText(num value) {
 
 /// An element containing only [text].
 XmlElement xmlTextElement(String name, String text) =>
-    XmlElement(XmlName(name), const [], [XmlText(text)]);
+    XmlElement(XmlName.parts(name), const [], [XmlText(text)]);
